@@ -1,5 +1,6 @@
 {
-  "name": "vite-react-typescript-starter",
+  "name": "Contact-Info",
+  "homepage: "https://github.com/Vikash888/Contact-Info/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
