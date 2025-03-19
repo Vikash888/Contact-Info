@@ -1,6 +1,6 @@
 {
   "name": "Contact-Info",
-  "homepage: "https://github.com/Vikash888/Contact-Info/",
+  "homepage": "https://github.com/Vikash888/Contact-Info/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,8 +10,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "server": "node server.js"
-    "deploy": "gh-pages" -d dist",
+    "server": "node server.js".,
+    "deploy": "gh-pages" -d dist"
   },
   "dependencies": {
     "lucide-react": "^0.344.0",
