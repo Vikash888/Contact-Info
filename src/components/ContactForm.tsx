@@ -63,7 +63,8 @@ const ContactForm: React.FC = () => {
           message: data.message || 'Failed to send message. Please try again.',
         });
       }
-    } catch (error) {
+    } catch (error: unknown) {
+      console.error('Form submission error:', error);
       setSubmitStatus({
         success: false,
         message: 'An error occurred. Please try again later.',
