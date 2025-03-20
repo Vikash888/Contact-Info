@@ -11,7 +11,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3001',
+        target: 'https://vikash888.github.io/Contact-Info/',
         changeOrigin: true,
       },
     },
