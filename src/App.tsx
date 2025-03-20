@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import emailjs from '@emailjs/browser';
+import React, { useState, useRef } from 'react';
 
 const ContactForm = () => {
-  const [formData, setState] = useState({
+  const [formData, setFormData] = useState({
     name: '',
     email: '',
     subject: '',
@@ -13,9 +12,11 @@ const ContactForm = () => {
     submitting: false,
     info: { error: false, msg: null }
   });
+  
+  const formRef = useRef(null);
 
   const handleChange = e => {
-    setState({
+    setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
@@ -24,44 +25,38 @@ const ContactForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus(prevStatus => ({ ...prevStatus, submitting: true }));
-
+    
     try {
-      // Initialize EmailJS with your user ID
-      // This should be loaded from .env file or set as a global variable
-      // emailjs.init("YOUR_USER_ID");
-
-      const templateParams = {
-        from_name: formData.name,
-        from_email: formData.email,
-        subject: formData.subject,
-        message: formData.message
-      };
-
-      await emailjs.send(
-        "YOUR_SERVICE_ID", // replace with your EmailJS service ID
-        "YOUR_TEMPLATE_ID", // replace with your EmailJS template ID
-        templateParams,
-        "YOUR_PUBLIC_KEY" // replace with your EmailJS public key
-      );
-
+      // Submit the form using the native form submission
+      formRef.current.submit();
+      
+      // Show success message
       setStatus({
         submitted: true,
         submitting: false,
-        info: { error: false, msg: 'Message sent successfully!' }
+        info: { error: false, msg: 'Message sent successfully! Redirecting...' }
       });
-      setState({
+      
+      // Reset the form
+      setFormData({
         name: '',
         email: '',
         subject: '',
         message: ''
       });
+      
+      // Optional: Redirect after a short delay
+      // setTimeout(() => {
+      //   window.location.href = '/Contact-Info/thank-you.html';
+      // }, 2000);
+      
     } catch (error) {
+      console.error('Error submitting form:', error);
       setStatus({
         submitted: false,
         submitting: false,
         info: { error: true, msg: 'Failed to send message. Please try again.' }
       });
-      console.error('Error sending email:', error);
     }
   };
 
@@ -75,6 +70,7 @@ const ContactForm = () => {
         </div>
       )}
 
+      {/* Visible React form for UI */}
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
@@ -147,6 +143,21 @@ const ContactForm = () => {
             {status.submitting ? 'Sending...' : 'Send Message'}
           </button>
         </div>
+      </form>
+      
+      {/* Hidden form that will actually be submitted */}
+      <form 
+        ref={formRef}
+        action="https://formsubmit.co/vikash.jmbox@gmail.com" 
+        method="POST"
+        style={{ display: 'none' }}
+      >
+        <input type="text" name="name" value={formData.name} readOnly />
+        <input type="email" name="email" value={formData.email} readOnly />
+        <input type="text" name="_subject" value={formData.subject} readOnly />
+        <textarea name="message" value={formData.message} readOnly></textarea>
+        <input type="hidden" name="_next" value="https://vikash888.github.io/Contact-Info/thank-you.html" />
+        <input type="hidden" name="_captcha" value="false" />
       </form>
     </div>
   );
